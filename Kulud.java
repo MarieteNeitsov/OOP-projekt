@@ -1,76 +1,47 @@
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.util.Arrays;
+
 public class Kulud {
 
-    private double[] üür;
-    private double[] kommunaalid;
-    private double[] söök;
-    private double[] transport;
-    private double[] meelelahutus;
-    private double[] riided_jalatsid;
-    private double[] ilu_tervis;
+    public double[] kategooria;
+    private double[][] andmed;
 
-    public double[] getÜür() {
-        return üür;
+    public Kulud() {
+        kategooria = new double[3];
+        andmed = new double[8][3];
     }
 
-    public void setÜür(double[] üür) {
-        this.üür = üür;
+    public double[] getKategooria() {
+        return kategooria;
     }
 
-    public double[] getKommunaalid() {
-        return kommunaalid;
+    public void setKategooria(double[] kategooria) {
+        this.kategooria = kategooria;
     }
 
-    public void setKommunaalid(double[] kommunaalid) {
-        this.kommunaalid = kommunaalid;
+    public double lisaEelarve(double summa) {
+        kategooria[0] = summa;
+        return kategooria[0];
     }
 
-    public double[] getSöök() {
-        return söök;
-    }
-
-    public void setSöök(double[] söök) {
-        this.söök = söök;
-    }
-
-    public double[] getTransport() {
-        return transport;
-    }
-
-    public void setTransport(double[] transport) {
-        this.transport = transport;
-    }
-
-    public double[] getMeelelahutus() {
-        return meelelahutus;
-    }
-
-    public void setMeelelahutus(double[] meelelahutus) {
-        this.meelelahutus = meelelahutus;
-    }
-
-    public double[] getRiided_jalatsid() {
-        return riided_jalatsid;
-    }
-
-    public void setRiided_jalatsid(double[] riided_jalatsid) {
-        this.riided_jalatsid = riided_jalatsid;
-    }
-
-    public double[] getIlu_tervis() {
-        return ilu_tervis;
-    }
-
-    public void setIlu_tervis(double[] ilu_tervis) {
-        this.ilu_tervis = ilu_tervis;
-    }
-
-    public double kategooriasJäänud(double[] kategooria, double kulu) {
-        kategooria[1] = kategooria[0] - kulu;
+    public double tegelikKulu(double kulu) {
+        kategooria[1] = kategooria[1] + kulu;
         return kategooria[1];
     }
 
-    public void varstiÜlePiiri(double[] kategooria) {
-        if (kategooria[1] > kategooria[0]*0.75)
+    public double vahe() {
+        kategooria[2] = kategooria[0] - kategooria[1];
+        return kategooria[2];
+    }
+
+    public void varstiÜlePiiri() {
+        if (kategooria[0] - kategooria[1] > kategooria[0]*0.75)
             System.out.println("Oled kulutanud üle 75% selle kategooria eelarvest. Ole ettetvaatlik!");
+    }
+
+    @Override
+    public String toString() {
+        return "\t" + kategooria[0] + "\t" + kategooria[1] + "\t" + kategooria[2];
     }
 }
