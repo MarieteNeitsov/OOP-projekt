@@ -6,10 +6,16 @@ public class Kulud {
 
     public double[] kategooria;
     private double[][] andmed;
+    private String nimetus;
 
-    public Kulud() {
+    public Kulud(String nimetus) {
         kategooria = new double[3];
         andmed = new double[8][3];
+        this.nimetus = nimetus;
+    }
+
+    public String getNimetus() {
+        return nimetus;
     }
 
     public double[] getKategooria() {

@@ -16,7 +16,7 @@ public class Saastmine {
 
     public int säästa(){
         Random suvaline = new Random();
-        int protsent = 0;
+        int protsent;
         if(tulu > 1000)
             protsent = suvaline.nextInt(20) + 1;
         else
