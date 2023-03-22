@@ -2,7 +2,7 @@ public class Kulud {
 
     private double[] kategooria;
 
-    public Kulud() {
+    public Kulud(String nimetus) {
         kategooria = new double[3];
     }
 
