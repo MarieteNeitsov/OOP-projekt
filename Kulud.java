@@ -1,23 +1,9 @@
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import java.util.Arrays;
-
 public class Kulud {
 
-    public double[] kategooria;
-    private double[][] andmed;
+    private double[] kategooria;
 
     public Kulud() {
         kategooria = new double[3];
-        andmed = new double[8][3];
-    }
-
-    public double[] getKategooria() {
-        return kategooria;
-    }
-
-    public void setKategooria(double[] kategooria) {
-        this.kategooria = kategooria;
     }
 
     public double lisaEelarve(double summa) {
@@ -25,23 +11,18 @@ public class Kulud {
         return kategooria[0];
     }
 
-    public double tegelikKulu(double kulu) {
+    public double lisaKulu(double kulu) {
         kategooria[1] = kategooria[1] + kulu;
         return kategooria[1];
     }
 
-    public double vahe() {
-        kategooria[2] = kategooria[0] - kategooria[1];
-        return kategooria[2];
+    public int protsent() {
+        kategooria[2] = (int) Math.round(kategooria[1] * 100 / kategooria[0]);
+        return (int) kategooria[2];
     }
 
     public void varstiÜlePiiri() {
-        if (kategooria[0] - kategooria[1] > kategooria[0]*0.75)
+        if (kategooria[0] - kategooria[1] > kategooria[0] * 0.75)
             System.out.println("Oled kulutanud üle 75% selle kategooria eelarvest. Ole ettetvaatlik!");
-    }
-
-    @Override
-    public String toString() {
-        return "\t" + kategooria[0] + "\t" + kategooria[1] + "\t" + kategooria[2];
     }
 }
