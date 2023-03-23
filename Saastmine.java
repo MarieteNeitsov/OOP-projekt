@@ -14,14 +14,13 @@ public class Saastmine {
         this.tulu = tulu;
     }
 
-    public int säästa(){
-        Random suvaline = new Random();
+    public double säästa(){
         int protsent;
         if(tulu > 1000)
-            protsent = suvaline.nextInt(20) + 1;
+            protsent = (int) (Math.random() * 20);
         else
-            protsent = suvaline.nextInt(10) +1;
-        return (int) (protsent/100 * tulu);
+            protsent = (int) (Math.random() * 10);
+        return protsent * tulu / 100;
 
     }
 

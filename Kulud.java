@@ -1,9 +1,19 @@
 public class Kulud {
 
     private double[] kategooria;
+    private String nimetus;
 
     public Kulud(String nimetus) {
         kategooria = new double[3];
+        this.nimetus = nimetus;
+    }
+
+    public double[] getKategooria() {
+        return kategooria;
+    }
+
+    public String getNimetus() {
+        return nimetus;
     }
 
     public double lisaEelarve(double summa) {
