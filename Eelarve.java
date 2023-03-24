@@ -34,13 +34,7 @@ public class Eelarve{
             andmed[8][1] = säästusumma;
         }
         System.out.println();
-        /*Kulud: üür, kommud, söök, transport, meelelahutus, riided/jalatsid, ilu/tervis, muu
-        Peale iga kategooria summa sisestamist kuvab ekraanile, mis summa veel jaotada on.
-        Alates meelelahutusest annab hoiatuse, kui vähemalt 75% eelarvest on kulutatud.
-        Kasutajal on valikud:
-        Lisa kulutus
-        Vaata ülevaadet
-        Lõpeta*/
+
         Kulud üür = new Kulud("üür");
         Kulud kommunaalkulud = new Kulud("kommunaalkulud");
         Kulud söök = new Kulud("söök");
@@ -73,12 +67,31 @@ public class Eelarve{
 
             double veelJaotada = tulu - eelarvedKokku - säästusumma;
 
-            if(veelJaotada < 0){
-                System.out.println("Sinu planeeritud eelarved kokku ületavad tulu ");
-                //vaja lõpetada
-            }
-            else if(veelJaotada == 0 && valdkonnaIndeks != 0){
-                // vaja lõpetada
+            if(veelJaotada == 0 && valdkonnaIndeks != 0 || veelJaotada <0){
+                boolean valik2 = false;
+
+                if(veelJaotada <0) System.out.println("Sinu planeeritud eelarved kokku ületavad tulu " + veelJaotada* -1.0 + " euro võrra, valdkondi jäänud: " + (valdkonnaIndeks + 1));
+                else {
+                    System.out.println("Oled ära jaotanud kogu oma tulu, valdkondi jäänud: " + (valdkonnaIndeks + 1));
+                    System.out.println("Vajuta 1, kui sa ei soovi järgnevaid eelarveid sisestada");
+                    System.out.println("Vajuta 2, kui soovid eelmist eelarvet uuesti sisestada");
+                    String valik = scan.next();
+                    if(valik.equals("1")) break;
+                    if(valik.equals("2")) valik2 = true;
+                }
+
+                if(valik2|| veelJaotada <0 ){
+
+                    System.out.println("Sisesta uus eelarve valdkonnale: "+ kulu.getNimetus());
+
+                    eelarvedKokku -= valdkonnaEelarve;
+                    realoendur--;
+                    double uusValdkonnaEelarve = scan.nextDouble();
+                    andmed[realoendur][1] = kulu.lisaEelarve(valdkonnaEelarve);
+                    realoendur++;
+                    eelarvedKokku += uusValdkonnaEelarve;
+                }
+
             }
             else{
                 System.out.println("Jaotada on veel: " + veelJaotada + " eurot, valdkondi jäänud: " + (valdkonnaIndeks + 1));
@@ -89,8 +102,38 @@ public class Eelarve{
         while(true){
             System.out.println("vali tegevus\n 1 - lisa kulutus\n 2 - vaata ülevaadet\n 3 - lõpeta");
             String valik = scan.next();
-            if(valik.equals("1")){
+            if(valik.equals("1")) {
+                System.out.println("Vali valdkond\n 1 - üür\n 2 - kommunaalkuludsöök\n 3 - söök\n 4 - transport\n 5 - meelelahutus\n 6 - riided ja jalatsid\n 7 - ilu ja tervis\n 8 - muu");
+                String valdkond = scan.next();
+                System.out.println("Sisesta summa, mis selles valdkonnas kulutasid: ");
+                double kulutus = scan.nextDouble();
+                switch (valdkond) {
+                    case "1":
+                        üür.lisaKulu(kulutus);
+                        break;
+                    case "2":
+                        kommunaalkulud.lisaKulu(kulutus);
+                        break;
+                    case "3":
+                        söök.lisaKulu(kulutus);
+                        break;
+                    case "4":
+                        transport.lisaKulu(kulutus);
+                        break;
+                    case "5":
+                        meelelahutus.lisaKulu(kulutus);
+                        break;
+                    case "6":
+                        riided_ja_jalatsid.lisaKulu(kulutus);
+                        break;
+                    case "7":
+                        ilu_ja_tervis.lisaKulu(kulutus);
+                        break;
+                    case "8":
+                        muu.lisaKulu(kulutus);
+                        break;
 
+                }
             }
             else if(valik.equals("2")){
                 SwingUtilities.invokeLater(() -> new KuludeTabel(andmed));

@@ -20,7 +20,7 @@ public class Saastmine {
             protsent = (int) (Math.random() * 20);
         else
             protsent = (int) (Math.random() * 10);
-        return protsent * tulu / 100;
+        return (int) (protsent/100.0 * tulu);
 
     }
 
