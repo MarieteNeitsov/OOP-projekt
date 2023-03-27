@@ -32,7 +32,7 @@ public class Kulud {
     }
 
     public void varstiÜlePiiri() {
-        if (kategooria[0] - kategooria[1] > kategooria[0] * 0.75)
-            System.out.println("Oled kulutanud üle 75% selle kategooria eelarvest. Ole ettetvaatlik!");
+        if (kategooria[2] > 75)
+            System.out.println("Oled kulutanud üle 75% selle kategooria eelarvest. Piira oma edasisi kulutusi!");
     }
 }
