@@ -29,7 +29,7 @@ public class Eelarve{
         double säästusumma = 0;
         if(vastus.equals("jah")){
             Saastmine säästmine = new Saastmine(tulu);
-            säästusumma = (int) Math.round(säästmine.säästa());
+            säästusumma = säästmine.säästa();
             System.out.println("Summa mille peaksid kõrvale panema: " + säästusumma);
             andmed[8][1] = säästusumma;
         }
@@ -57,20 +57,13 @@ public class Eelarve{
 
             System.out.println();
             valdkonnaIndeks--;
-            if(valdkonnaIndeks <= 6){
-                for (Kulud kulu1 :kulud) {
-                    System.out.println(kulu1.getNimetus() + ": " + kulu1.getKategooria()[0] + " eurot");
-                }
-                System.out.println("säästud: " + säästusumma + " eurot");
-            }
-            System.out.println();
 
             double veelJaotada = tulu - eelarvedKokku - säästusumma;
 
             if(veelJaotada == 0 && valdkonnaIndeks != 0 || veelJaotada <0){
                 boolean valik2 = false;
 
-                if(veelJaotada <0) System.out.println("Sinu planeeritud eelarved kokku ületavad tulu " + veelJaotada* -1.0 + " euro võrra, valdkondi jäänud: " + (valdkonnaIndeks + 1));
+                if(veelJaotada <0) System.out.println("Sinu planeeritud eelarved kokku ületavad tulu " + veelJaotada * -1.0 + " euro võrra, valdkondi jäänud: " + (valdkonnaIndeks + 1));
                 else {
                     System.out.println("Oled ära jaotanud kogu oma tulu, valdkondi jäänud: " + (valdkonnaIndeks + 1));
                     System.out.println("Vajuta 1, kui sa ei soovi järgnevaid eelarveid sisestada");
@@ -87,20 +80,29 @@ public class Eelarve{
                     eelarvedKokku -= valdkonnaEelarve;
                     realoendur--;
                     double uusValdkonnaEelarve = scan.nextDouble();
-                    andmed[realoendur][1] = kulu.lisaEelarve(valdkonnaEelarve);
+                    andmed[realoendur][1] = kulu.lisaEelarve(uusValdkonnaEelarve);
                     realoendur++;
                     eelarvedKokku += uusValdkonnaEelarve;
+                    veelJaotada = tulu -säästusumma-eelarvedKokku;
                 }
 
             }
-            else{
-                System.out.println("Jaotada on veel: " + veelJaotada + " eurot, valdkondi jäänud: " + (valdkonnaIndeks + 1));
+
+            System.out.println("Jaotada on veel: " + veelJaotada + " eurot, valdkondi jäänud: " + (valdkonnaIndeks + 1));
+
+            System.out.println();
+            if(valdkonnaIndeks <= 6){
+                for (Kulud kulu1 :kulud) {
+                    System.out.println(kulu1.getNimetus() + ": " + kulu1.getKategooria()[0] + " eurot");
+                }
+                System.out.println("säästud: " + säästusumma + " eurot");
             }
             System.out.println();
         }
+        System.out.println("Oled valmis seadnud kõik eelarved!");
 
         while(true){
-            System.out.println("vali tegevus\n 1 - lisa kulutus\n 2 - vaata ülevaadet\n 3 - lõpeta");
+            System.out.println("\nvali tegevus\n 1 - lisa kulutus\n 2 - vaata ülevaadet\n 3 - lõpeta");
             String valik = scan.next();
             if(valik.equals("1")) {
                 System.out.println("Vali valdkond\n 1 - üür\n 2 - kommunaalkuludsöök\n 3 - söök\n 4 - transport\n 5 - meelelahutus\n 6 - riided ja jalatsid\n 7 - ilu ja tervis\n 8 - muu");
@@ -109,30 +111,33 @@ public class Eelarve{
                 double kulutus = scan.nextDouble();
                 switch (valdkond) {
                     case "1":
-                        üür.lisaKulu(kulutus);
+                        andmed[0][2] = üür.lisaKulu(kulutus);
                         break;
                     case "2":
-                        kommunaalkulud.lisaKulu(kulutus);
+                        andmed[1][2] = kommunaalkulud.lisaKulu(kulutus);
                         break;
                     case "3":
-                        söök.lisaKulu(kulutus);
+                        andmed[2][2] = söök.lisaKulu(kulutus);
                         break;
                     case "4":
-                        transport.lisaKulu(kulutus);
+                        andmed[3][2] = transport.lisaKulu(kulutus);
                         break;
                     case "5":
-                        meelelahutus.lisaKulu(kulutus);
+                        andmed[4][2] = meelelahutus.lisaKulu(kulutus);
+                        meelelahutus.varstiÜlePiiri();
                         break;
                     case "6":
-                        riided_ja_jalatsid.lisaKulu(kulutus);
+                        andmed[5][2] = riided_ja_jalatsid.lisaKulu(kulutus);
+                        riided_ja_jalatsid.varstiÜlePiiri();
                         break;
                     case "7":
-                        ilu_ja_tervis.lisaKulu(kulutus);
+                        andmed[6][2] = ilu_ja_tervis.lisaKulu(kulutus);
+                        ilu_ja_tervis.varstiÜlePiiri();
                         break;
                     case "8":
-                        muu.lisaKulu(kulutus);
+                        andmed[7][2] = muu.lisaKulu(kulutus);
+                        muu.varstiÜlePiiri();
                         break;
-
                 }
             }
             else if(valik.equals("2")){

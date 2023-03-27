@@ -14,14 +14,18 @@ public class Saastmine {
         this.tulu = tulu;
     }
 
-    public double säästa(){
-        int protsent;
-        if(tulu > 1000)
-            protsent = (int) (Math.random() * 20);
-        else
-            protsent = (int) (Math.random() * 10);
-        return (int) (protsent/100.0 * tulu);
 
+    public int säästa(){ //kui tulu on üle 1000 euro genereerib
+        Random suvaline = new Random();
+        int protsent;
+        if(tulu > 1000) {
+            protsent = suvaline.nextInt(20) + 1;
+        }
+        else
+            protsent = suvaline.nextInt(10) + 1;
+        double sääst = protsent / 100.0 * tulu;
+        int tulemus = (int) Math.ceil(sääst);
+        return tulemus;
     }
 
 
