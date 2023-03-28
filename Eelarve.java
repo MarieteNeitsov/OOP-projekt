@@ -6,7 +6,7 @@ import javax.swing.*;
 
 public class Eelarve{
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws Exception{
         Object[][] andmed = {{"Üür",0,0,0},
                 {"Kommunaalid",0,0,0},
                 {"Söök",0,0,0},
@@ -51,7 +51,10 @@ public class Eelarve{
         double kuludKokku = 0;
         int realoendur = 0;
         boolean valik2 = false;
+
+
         for (Kulud kulu:kulud) {
+
             if (!valik2) {
                 System.out.println("Sisesta summa, mille planeerid kulutada valdkonnas: " + kulu.getNimetus());
                 valdkonnaEelarve = scan.nextDouble();
@@ -84,69 +87,41 @@ public class Eelarve{
                 }
 
                 if(valik2|| veelJaotada <0 ){
-                    for (int i = 0; i < kulud.size(); i++) {
-                        System.out.println(i+1 + ". " + kulud.get(i).getNimetus());
-                    }
+
+                   /* boolean x = true;
+                    boolean lopp = false;
+                    while(x){*/
+                        for (int i = 0; i < realoendur; i++) {
+                            System.out.println(i+1 + ". " + kulud.get(i).getNimetus());
+                        }
                     System.out.print("Sisesta valdkonna number, mille eelarvet soovid parandada: ");
-                    String valdkond = scan.next();
+                    int valdkond = scan.nextInt();
+                    Kulud kategooria = kulud.get(valdkond-1);
                     double eelmineEelarve = 0;
-                    switch (valdkond) {
-                        case "1":
-                            eelmineEelarve = (double) andmed[0][1];
-                            System.out.println("Sisesta summa, mille planeerid kulutada valdkonnas: üür");
-                            valdkonnaEelarve = scan.nextDouble();
-                            andmed[0][1] = üür.lisaEelarve(valdkonnaEelarve);
-                            break;
-                        case "2":
-                            eelmineEelarve = (double) andmed[1][1];
-                            System.out.println("Sisesta summa, mille planeerid kulutada valdkonnas: kommunaalkulud");
-                            valdkonnaEelarve = scan.nextDouble();
-                            andmed[1][1] = kommunaalkulud.lisaEelarve(valdkonnaEelarve);
-                            break;
-                        case "3":
-                            eelmineEelarve = (double) andmed[2][1];
-                            System.out.println("Sisesta summa, mille planeerid kulutada valdkonnas: söök");
-                            valdkonnaEelarve = scan.nextDouble();
-                            andmed[2][1] = söök.lisaEelarve(valdkonnaEelarve);
-                            break;
-                        case "4":
-                            eelmineEelarve = (double) andmed[3][1];
-                            System.out.println("Sisesta summa, mille planeerid kulutada valdkonnas: transport");
-                            valdkonnaEelarve = scan.nextDouble();
-                            andmed[3][1] = transport.lisaEelarve(valdkonnaEelarve);
-                            break;
-                        case "5":
-                            eelmineEelarve = (double) andmed[4][1];
-                            System.out.println("Sisesta summa, mille planeerid kulutada valdkonnas: meelelahutus");
-                            valdkonnaEelarve = scan.nextDouble();
-                            andmed[4][1] = meelelahutus.lisaEelarve(valdkonnaEelarve);
-                            break;
-                        case "6":
-                            eelmineEelarve = (double) andmed[5][1];
-                            System.out.println("Sisesta summa, mille planeerid kulutada valdkonnas: riided/jalatsid");
-                            valdkonnaEelarve = scan.nextDouble();
-                            andmed[5][1] = riided_ja_jalatsid.lisaEelarve(valdkonnaEelarve);
-                            break;
-                        case "7":
-                            eelmineEelarve = (double) andmed[6][1];
-                            System.out.println("Sisesta summa, mille planeerid kulutada valdkonnas: ilu/tervis");
-                            valdkonnaEelarve = scan.nextDouble();
-                            andmed[6][1] = ilu_ja_tervis.lisaEelarve(valdkonnaEelarve);
-                            break;
-                        case "8":
-                            eelmineEelarve = (double) andmed[7][1];
-                            System.out.println("Sisesta summa, mille planeerid kulutada valdkonnas: muu");
-                            valdkonnaEelarve = scan.nextDouble();
-                            andmed[7][1] = muu.lisaEelarve(valdkonnaEelarve);
-                            break;
-                    }
+
+                    System.out.println("Sisesta summa, mille planeerid kulutada valdkonnas: " +kategooria.getNimetus());
+
+                    eelmineEelarve = (double) andmed[valdkond-1][1];
+                    valdkonnaEelarve = scan.nextDouble();
+                    andmed[valdkond-1][1] = kategooria.lisaEelarve(valdkonnaEelarve);
+
                     veelJaotada += eelmineEelarve;
                     veelJaotada -= valdkonnaEelarve;
                     eelarvedKokku -= eelmineEelarve;
                     eelarvedKokku += valdkonnaEelarve;
                     if (veelJaotada == 0) {
-                        valik2 = true;
+                        /*System.out.println("Oled ära jaotanud kogu oma tulu, valdkondi jäänud: " + (valdkonnaIndeks));
+                        System.out.println("Vajuta 1, kui sa ei soovi järgnevaid eelarveid sisestada");
+                        System.out.println("Vajuta 2, kui soovid eelmist eelarvet uuesti sisestada");
+                        String valik = scan.next();
+                        if(valik.equals("1")) { lopp = true; break;};
+                        if(valik.equals("2")) x = true;
                     }
+                    if(x!=true) x=false;
+
+                    } if(lopp) break;*/}
+                    System.out.println("Jaotada on veel: " + veelJaotada + " eurot, valdkondi jäänud: " + (valdkonnaIndeks));
+
                 }
 
             }
@@ -167,55 +142,14 @@ public class Eelarve{
             String valik = scan.next();
             if(valik.equals("1")) {
                 System.out.println("Vali valdkond\n 1 - üür\n 2 - kommunaalkuludsöök\n 3 - söök\n 4 - transport\n 5 - meelelahutus\n 6 - riided ja jalatsid\n 7 - ilu ja tervis\n 8 - muu");
-                String valdkond = scan.next();
+                int valdkond = scan.nextInt();
                 System.out.println("Sisesta summa, mis selles valdkonnas kulutasid: ");
                 double kulutus = scan.nextDouble();
-                switch (valdkond) {
-                    case "1":
-                        andmed[0][2] = üür.lisaKulu(kulutus);
-                        andmed[0][3] = üür.protsent();
-                        kuludKokku += kulutus;
-                        break;
-                    case "2":
-                        andmed[1][2] = kommunaalkulud.lisaKulu(kulutus);
-                        andmed[1][3] = kommunaalkulud.protsent();
-                        kuludKokku += kulutus;
-                        break;
-                    case "3":
-                        andmed[2][2] = söök.lisaKulu(kulutus);
-                        andmed[2][3] = söök.protsent();
-                        kuludKokku += kulutus;
-                        break;
-                    case "4":
-                        andmed[3][2] = transport.lisaKulu(kulutus);
-                        andmed[3][3] = transport.protsent();
-                        kuludKokku += kulutus;
-                        break;
-                    case "5":
-                        andmed[4][2] = meelelahutus.lisaKulu(kulutus);
-                        andmed[4][3] = meelelahutus.protsent();
-                        meelelahutus.varstiÜlePiiri();
-                        kuludKokku += kulutus;
-                        break;
-                    case "6":
-                        andmed[5][2] = riided_ja_jalatsid.lisaKulu(kulutus);
-                        andmed[5][3] = riided_ja_jalatsid.protsent();
-                        riided_ja_jalatsid.varstiÜlePiiri();
-                        kuludKokku += kulutus;
-                        break;
-                    case "7":
-                        andmed[6][2] = ilu_ja_tervis.lisaKulu(kulutus);
-                        andmed[6][3] = ilu_ja_tervis.protsent();
-                        ilu_ja_tervis.varstiÜlePiiri();
-                        kuludKokku += kulutus;
-                        break;
-                    case "8":
-                        andmed[7][2] = muu.lisaKulu(kulutus);
-                        andmed[7][3] = muu.protsent();
-                        muu.varstiÜlePiiri();
-                        kuludKokku += kulutus;
-                        break;
-                }
+                Kulud kategooria = kulud.get(valdkond-1);
+                andmed[valdkond-1][2] = kategooria.lisaKulu(kulutus);
+                andmed[valdkond-1][3] = kategooria.protsent();
+
+
             }
             else if(valik.equals("2")){
                 SwingUtilities.invokeLater(() -> new KuludeTabel(andmed));
