@@ -148,13 +148,23 @@ public class Eelarve{
                 Kulud kategooria = kulud.get(valdkond-1);
                 andmed[valdkond-1][2] = kategooria.lisaKulu(kulutus);
                 andmed[valdkond-1][3] = kategooria.protsent();
+                kuludKokku += kulutus;
 
 
             }
             else if(valik.equals("2")){
                 SwingUtilities.invokeLater(() -> new KuludeTabel(andmed));
+                if(eelarvedKokku + säästusumma-kuludKokku >0) System.out.println("Võimalik veel kulutada: " + (eelarvedKokku + säästusumma-kuludKokku));
+                else if(eelarvedKokku + säästusumma-kuludKokku== 0) System.out.println("Oled kõik eelarvetele planeeritud raha ära kulutanud!");
+                else System.out.println("Sinu kulud on ületanud eelarvetele planeeritud summa " + (eelarvedKokku + säästusumma-kuludKokku) * -1 + " euro võrra");
             }
             else if(valik.equals("3"))
+                System.out.println("Sinu kulutused kokku: " + kuludKokku);
+                if(eelarvedKokku-kuludKokku >0){
+                    System.out.println("Kuna sinu kulud jäid alla planeeritud eelarvete summa, siis sa säästsid " + ((double) andmed[8][2] + (eelarvedKokku-kuludKokku))+ " eurot");
+                }else{
+                    // vaja lõpetada
+                }
                 break;
         }
 
