@@ -21,6 +21,6 @@ public class KuludeTabel extends JFrame {
         this.setAlwaysOnTop(true);
         this.pack();
         this.setVisible(true);
-        this.setBounds(400, 200, 500, 220);
+        this.setBounds(400, 200, 500, 250);
     }
 }
