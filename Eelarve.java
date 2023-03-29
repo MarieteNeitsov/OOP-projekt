@@ -6,11 +6,12 @@ import javax.swing.*;
 
 public class Eelarve{
     static int valdkonnaIndeks = 8;
-     static double valdkonnaEelarve = 0;
+    static double valdkonnaEelarve = 0;
     static double eelarvedKokku = 0;
     static double kuludKokku = 0;
     static int realoendur = 0;
     static double veelJaotada =0.0;
+    static  List<Kulud> kulud;
     static Object[][] andmed = {{"Üür",0,0,0},
             {"Kommunaalid",0,0,0},
             {"Söök",0,0,0},
@@ -43,7 +44,7 @@ public class Eelarve{
         Kulud ilu_ja_tervis= new Kulud("ilu/tervis");
         Kulud muu = new Kulud("muu");
         Kulud säästud = new Kulud("säästud");
-        List<Kulud> kulud = new ArrayList<>(Arrays.asList(üür, kommunaalkulud, söök, transport, meelelahutus, riided_ja_jalatsid, ilu_ja_tervis, muu));
+        kulud = new ArrayList<>(Arrays.asList(üür, kommunaalkulud, söök, transport, meelelahutus, riided_ja_jalatsid, ilu_ja_tervis, muu));
 
         Scanner scan = new Scanner(System.in);
         System.out.print("Sisesta oma selle kuu sissetulek: ");
@@ -56,6 +57,7 @@ public class Eelarve{
             Saastmine säästmine = new Saastmine(tulu);
             säästusumma = säästmine.säästa();
             System.out.println("Summa, mille peaksid kõrvale panema: " + säästusumma);
+            System.out.println("Eelarvetele kulutada on: " + (tulu-säästusumma));
             andmed[8][1] = säästud.lisaEelarve(säästusumma);
             andmed[8][2] = säästud.lisaKulu(säästusumma);
             andmed[8][3] = säästud.protsent();
@@ -72,7 +74,7 @@ public class Eelarve{
 
         for (Kulud kulu:kulud) {
 
-            if (!valik2) {
+           // if (!valik2) {
                 System.out.println("Sisesta summa, mille planeerid kulutada valdkonnas: " + kulu.getNimetus());
                 valdkonnaEelarve = scan.nextDouble();
                 andmed[realoendur][1] = kulu.lisaEelarve(valdkonnaEelarve);
@@ -88,34 +90,30 @@ public class Eelarve{
                     System.out.println("säästud: " + säästusumma + " eurot");
                 }
                 System.out.println();
-            }
+            //}
 
             //double veelJaotada = tulu - eelarvedKokku - säästusumma;
             veelJaotada = tulu - eelarvedKokku - säästusumma;
 
             if(veelJaotada == 0 && valdkonnaIndeks != 0 || veelJaotada <0){
-                if(veelJaotada <0) System.out.println("Sinu planeeritud eelarved kokku ületavad tulu " + veelJaotada* -1.0 + " euro võrra, valdkondi jäänud: " + (valdkonnaIndeks));
-                else {
-                    System.out.println("Oled ära jaotanud kogu oma tulu, valdkondi jäänud: " + (valdkonnaIndeks));
+               // if(veelJaotada <0) System.out.println("Sinu planeeritud eelarved kokku ületavad tulu " + veelJaotada* -1.0 + " euro võrra, valdkondi jäänud: " + (valdkonnaIndeks));
+                if(veelJaotada ==0) {
+                    /*System.out.println("Oled ära jaotanud kogu oma tulu, valdkondi jäänud: " + (valdkonnaIndeks));
                     System.out.println("Vajuta 1, kui sa ei soovi järgnevaid eelarveid sisestada");
                     System.out.println("Vajuta 2, kui soovid eelmist eelarvet uuesti sisestada");
                     String valik = scan.next();
                     if(valik.equals("1")) break;
-                    if(valik.equals("2")) valik2 = true;
+                    if(valik.equals("2")) valik2 = true;*/
+                    if(kasÜlejäänudeelarvedNulliks()) break;
+                    else valik2 = true;
                 }
-
                 if(valik2|| veelJaotada <0 ){
 
-                   /* boolean x = true;
-                    boolean lopp = false;
-                    while(x){*/
-                        for (int i = 0; i < realoendur; i++) {
+                        /*for (int i = 0; i < realoendur; i++) {
                             System.out.println(i+1 + ". " + kulud.get(i).getNimetus());
-                        }
-                    System.out.print("Sisesta valdkonna number, mille eelarvet soovid parandada: ");
-                    int valdkond = scan.nextInt();
-                    Kulud kategooria = kulud.get(valdkond-1);
-                    eelarveParandus(andmed,valdkond,kategooria);
+                        }*/
+
+                    eelarveParandus(andmed,kulud);
                     /*double eelmineEelarve = 0;
 
                     System.out.println("Sisesta summa, mille planeerid kulutada valdkonnas: " +kategooria.getNimetus());
@@ -132,20 +130,14 @@ public class Eelarve{
                         for (int i = 0; i < realoendur; i++) {
                             System.out.println(i+1 + ". " + kulud.get(i).getNimetus());
                         }
-                        System.out.print("Sisesta valdkonna number, mille eelarvet soovid parandada: ");
+                        /*System.out.print("Sisesta valdkonna number, mille eelarvet soovid parandada: ");
                         valdkond = scan.nextInt();
-                        kategooria = kulud.get(valdkond-1);
-                        eelarveParandus(andmed,valdkond,kategooria);
-                        /*System.out.println("Oled ära jaotanud kogu oma tulu, valdkondi jäänud: " + (valdkonnaIndeks));
-                        System.out.println("Vajuta 1, kui sa ei soovi järgnevaid eelarveid sisestada");
-                        System.out.println("Vajuta 2, kui soovid eelmist eelarvet uuesti sisestada");
-                        String valik = scan.next();
-                        if(valik.equals("1")) { lopp = true; break;};
-                        if(valik.equals("2")) x = true;
-                    }
-                    if(x!=true) x=false;
+                        kategooria = kulud.get(valdkond-1);*/
 
-                    } if(lopp) break;*/}
+                        if(kasÜlejäänudeelarvedNulliks()) break;
+                        else eelarveParandus(andmed,kulud);
+
+                        }
                     System.out.println("Jaotada on veel: " + veelJaotada + " eurot, valdkondi jäänud: " + (valdkonnaIndeks));
 
                 }
@@ -174,7 +166,11 @@ public class Eelarve{
                 Kulud kategooria = kulud.get(valdkond-1);
                 andmed[valdkond-1][2] = kategooria.lisaKulu(kulutus);
                 andmed[valdkond-1][3] = kategooria.protsent();
-                kategooria.varstiÜlePiiri();
+                double kategooriaEelarve =(double)andmed[valdkond-1][1];
+                double kategooriaKulutused = (double) andmed[valdkond-1][2];
+                if( kategooriaKulutused > kategooriaEelarve) System.out.println("Oled ületanud eelarve " + kategooria.getNimetus() + " " + (kategooriaKulutused-kategooriaEelarve) + " euro võrra!");
+                else if (valdkond >= 5)  kategooria.varstiÜlePiiri();
+
                 kuludKokku += kulutus;
 
 
@@ -185,26 +181,31 @@ public class Eelarve{
                 else if(eelarvedKokku + /*((double) andmed[8][2])*/-kuludKokku== 0) System.out.println("Oled kõik eelarvetele planeeritud raha ära kulutanud!");
                 else System.out.println("Sinu kulud on ületanud eelarvetele planeeritud summa " + (eelarvedKokku + /*((double) andmed[8][2])*/ -kuludKokku) * -1 + " euro võrra");
             }
-            else if(valik.equals("3"))
+            else if(valik.equals("3")){
                 System.out.println("Sinu kulutused kokku: " + kuludKokku);
                 if(eelarvedKokku-kuludKokku >0){
-                    System.out.println("Kuna sinu kulud jäid alla planeeritud eelarvete summa, siis sa säästsid " + ((double) andmed[8][2] + (eelarvedKokku-kuludKokku))+ " eurot");
+                    System.out.println("Kuna sinu kulud jäid alla planeeritud eelarvete summa, siis sa säästsid " + ((double) andmed[8][2] +(eelarvedKokku-kuludKokku))+ " eurot"); //miskipärast ei liida juurde sääste
                 }else{
 
                 }
-                break;
+                break;}
         }
 
 
 
-
-
-
-
-
     }
-    public static void eelarveParandus(Object[][] andmed, int valdkond, Kulud kategooria){
+    public static void eelarveParandus(Object[][] andmed, List<Kulud> kulud){
+        if(veelJaotada < 0) System.out.println("Sinu planeeritud eelarved kokku ületavad tulu " + veelJaotada* -1.0 + " euro võrra, valdkondi jäänud: " + (valdkonnaIndeks));
+        for (int i = 0; i < realoendur; i++) {
+            System.out.println(i+1 + ". " + kulud.get(i).getNimetus());
+        }
+
         Scanner scan = new Scanner(System.in);
+
+        System.out.print("Sisesta valdkonna number, mille eelarvet soovid parandada: ");
+        int valdkond = scan.nextInt();
+        Kulud kategooria = kulud.get(valdkond-1);
+
         double eelmineEelarve = 0;
 
         System.out.println("Sisesta summa, mille planeerid kulutada valdkonnas: " +kategooria.getNimetus());
@@ -217,7 +218,22 @@ public class Eelarve{
         veelJaotada -= valdkonnaEelarve;
         eelarvedKokku -= eelmineEelarve;
         eelarvedKokku += valdkonnaEelarve;
+        for (Kulud kulu : kulud) {
+            System.out.println(kulu.getNimetus() + ": " + kulu.getKategooria()[0] + " eurot");
+        }System.out.println("säästud: " + (double) andmed[8][2] + " eurot");
 
+
+    }
+    public static boolean kasÜlejäänudeelarvedNulliks(){
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Oled ära jaotanud kogu oma tulu, valdkondi jäänud: " + (valdkonnaIndeks));
+        System.out.println("Vajuta 1, kui sa ei soovi järgnevaid eelarveid sisestada");
+        System.out.println("Vajuta 2, kui soovid eelmist eelarvet uuesti sisestada");
+        String valik = scan.next();
+        boolean otsus= true;
+        if(valik.equals("1")) otsus = true;
+        if(valik.equals("2")) otsus = false;
+        return otsus;
     }
 
 }
