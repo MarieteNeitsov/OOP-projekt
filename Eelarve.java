@@ -5,9 +5,26 @@ import java.util.Scanner;
 import javax.swing.*;
 
 public class Eelarve{
+    static int valdkonnaIndeks = 8;
+     static double valdkonnaEelarve = 0;
+    static double eelarvedKokku = 0;
+    static double kuludKokku = 0;
+    static int realoendur = 0;
+    static double veelJaotada =0.0;
+    static Object[][] andmed = {{"Üür",0,0,0},
+            {"Kommunaalid",0,0,0},
+            {"Söök",0,0,0},
+            {"Transport",0,0,0},
+            {"Meelelahutus",0,0,0},
+            {"Riided/jalatsid",0,0,0},
+            {"Ilu/tervis",0,0,0},
+            {"Muu",0,0,0},
+            {"Säästud",0,0,0}};
+
+
 
     public static void main(String[] args) throws Exception{
-        Object[][] andmed = {{"Üür",0,0,0},
+        /*Object[][] andmed = {{"Üür",0,0,0},
                 {"Kommunaalid",0,0,0},
                 {"Söök",0,0,0},
                 {"Transport",0,0,0},
@@ -15,7 +32,7 @@ public class Eelarve{
                 {"Riided/jalatsid",0,0,0},
                 {"Ilu/tervis",0,0,0},
                 {"Muu",0,0,0},
-                {"Säästud",0,0,0}};
+                {"Säästud",0,0,0}};*/
 
         Kulud üür = new Kulud("üür");
         Kulud kommunaalkulud = new Kulud("kommunaalkulud");
@@ -45,11 +62,11 @@ public class Eelarve{
         }
         System.out.println();
 
-        int valdkonnaIndeks = 8;
+        /*int valdkonnaIndeks = 8;
         double valdkonnaEelarve = 0;
         double eelarvedKokku = 0;
         double kuludKokku = 0;
-        int realoendur = 0;
+        int realoendur = 0;*/
         boolean valik2 = false;
 
 
@@ -73,7 +90,8 @@ public class Eelarve{
                 System.out.println();
             }
 
-            double veelJaotada = tulu - eelarvedKokku - säästusumma;
+            //double veelJaotada = tulu - eelarvedKokku - säästusumma;
+            veelJaotada = tulu - eelarvedKokku - säästusumma;
 
             if(veelJaotada == 0 && valdkonnaIndeks != 0 || veelJaotada <0){
                 if(veelJaotada <0) System.out.println("Sinu planeeritud eelarved kokku ületavad tulu " + veelJaotada* -1.0 + " euro võrra, valdkondi jäänud: " + (valdkonnaIndeks));
@@ -97,7 +115,8 @@ public class Eelarve{
                     System.out.print("Sisesta valdkonna number, mille eelarvet soovid parandada: ");
                     int valdkond = scan.nextInt();
                     Kulud kategooria = kulud.get(valdkond-1);
-                    double eelmineEelarve = 0;
+                    eelarveParandus(andmed,valdkond,kategooria);
+                    /*double eelmineEelarve = 0;
 
                     System.out.println("Sisesta summa, mille planeerid kulutada valdkonnas: " +kategooria.getNimetus());
 
@@ -108,8 +127,15 @@ public class Eelarve{
                     veelJaotada += eelmineEelarve;
                     veelJaotada -= valdkonnaEelarve;
                     eelarvedKokku -= eelmineEelarve;
-                    eelarvedKokku += valdkonnaEelarve;
+                    eelarvedKokku += valdkonnaEelarve;*/
                     if (veelJaotada == 0) {
+                        for (int i = 0; i < realoendur; i++) {
+                            System.out.println(i+1 + ". " + kulud.get(i).getNimetus());
+                        }
+                        System.out.print("Sisesta valdkonna number, mille eelarvet soovid parandada: ");
+                        valdkond = scan.nextInt();
+                        kategooria = kulud.get(valdkond-1);
+                        eelarveParandus(andmed,valdkond,kategooria);
                         /*System.out.println("Oled ära jaotanud kogu oma tulu, valdkondi jäänud: " + (valdkonnaIndeks));
                         System.out.println("Vajuta 1, kui sa ei soovi järgnevaid eelarveid sisestada");
                         System.out.println("Vajuta 2, kui soovid eelmist eelarvet uuesti sisestada");
@@ -148,22 +174,23 @@ public class Eelarve{
                 Kulud kategooria = kulud.get(valdkond-1);
                 andmed[valdkond-1][2] = kategooria.lisaKulu(kulutus);
                 andmed[valdkond-1][3] = kategooria.protsent();
+                kategooria.varstiÜlePiiri();
                 kuludKokku += kulutus;
 
 
             }
             else if(valik.equals("2")){
                 SwingUtilities.invokeLater(() -> new KuludeTabel(andmed));
-                if(eelarvedKokku + säästusumma-kuludKokku >0) System.out.println("Võimalik veel kulutada: " + (eelarvedKokku + säästusumma-kuludKokku));
-                else if(eelarvedKokku + säästusumma-kuludKokku== 0) System.out.println("Oled kõik eelarvetele planeeritud raha ära kulutanud!");
-                else System.out.println("Sinu kulud on ületanud eelarvetele planeeritud summa " + (eelarvedKokku + säästusumma-kuludKokku) * -1 + " euro võrra");
+                if(eelarvedKokku + /*((double) andmed[8][2])*/ -kuludKokku > 0) System.out.println("Võimalik veel kulutada: " + (eelarvedKokku + /*((double) andmed[8][2])*/-kuludKokku));
+                else if(eelarvedKokku + /*((double) andmed[8][2])*/-kuludKokku== 0) System.out.println("Oled kõik eelarvetele planeeritud raha ära kulutanud!");
+                else System.out.println("Sinu kulud on ületanud eelarvetele planeeritud summa " + (eelarvedKokku + /*((double) andmed[8][2])*/ -kuludKokku) * -1 + " euro võrra");
             }
             else if(valik.equals("3"))
                 System.out.println("Sinu kulutused kokku: " + kuludKokku);
                 if(eelarvedKokku-kuludKokku >0){
                     System.out.println("Kuna sinu kulud jäid alla planeeritud eelarvete summa, siis sa säästsid " + ((double) andmed[8][2] + (eelarvedKokku-kuludKokku))+ " eurot");
                 }else{
-                    // vaja lõpetada
+
                 }
                 break;
         }
@@ -176,4 +203,21 @@ public class Eelarve{
 
 
     }
+    public static void eelarveParandus(Object[][] andmed, int valdkond, Kulud kategooria){
+        Scanner scan = new Scanner(System.in);
+        double eelmineEelarve = 0;
+
+        System.out.println("Sisesta summa, mille planeerid kulutada valdkonnas: " +kategooria.getNimetus());
+
+        eelmineEelarve = (double) andmed[valdkond-1][1];
+        valdkonnaEelarve = scan.nextDouble();
+        andmed[valdkond-1][1] = kategooria.lisaEelarve(valdkonnaEelarve);
+
+        veelJaotada += eelmineEelarve;
+        veelJaotada -= valdkonnaEelarve;
+        eelarvedKokku -= eelmineEelarve;
+        eelarvedKokku += valdkonnaEelarve;
+
+    }
+
 }
