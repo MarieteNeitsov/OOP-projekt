@@ -7,7 +7,7 @@ public class Saastmine {
         this.tulu = tulu;
     }
 
-    public int säästa() { //kui tulu on üle 1000 euro genereerib
+    public int säästa() {
         Random suvaline = new Random();
         int protsent;
         if (tulu > 1000) {

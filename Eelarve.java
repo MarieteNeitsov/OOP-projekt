@@ -25,6 +25,7 @@ public class Eelarve {
             {"Säästud", 0, 0, 0}};
 
     public static void main(String[] args) {
+        //kulude isendid iga valdkonna eelarve jaoks
         Kulud üür = new Kulud("üür");
         Kulud kommunaalkulud = new Kulud("kommunaalkulud");
         Kulud söök = new Kulud("söök");
@@ -43,6 +44,8 @@ public class Eelarve {
         System.out.println("Kas soovid sellel kuul säästa? jah/ei");
         String vastus = scan.next();
         double säästusumma = 0;
+
+        // kasutaja soovil säästame juhusliku summa tulust ja lisame ka anmdetesse
         if (vastus.equals("jah")) {
             Saastmine säästmine = new Saastmine(tulu);
             säästusumma = säästmine.säästa();
@@ -54,6 +57,7 @@ public class Eelarve {
         System.out.println();
         boolean valik2 = false;
 
+        // iga valdkonna eelarve jaoks küsime kasutajalt summat
         for (Kulud kulu : kulud) {
             System.out.println("Sisesta summa, mille planeerid kulutada valdkonnas: " + kulu.getNimetus());
             valdkonnaEelarve = scan.nextDouble();
@@ -63,6 +67,8 @@ public class Eelarve {
 
             System.out.println();
             valdkonnaIndeks--;
+
+            // väljastame eelarvete nimetused koos lisatud summadega ekraanile
             if (valdkonnaIndeks <= 7) {
                 for (Kulud kulu1 : kulud)
                     System.out.println(kulu1.getNimetus() + ": " + kulu1.getKategooria()[0] + " eurot");
@@ -73,23 +79,25 @@ public class Eelarve {
 
             veelJaotada = tulu - eelarvedKokku - säästusumma;
 
+
+            //kui kasutaja on läinud eelarvetega üle tulu või on kõik ära jaotanud enne viimast eelarvet, siis tehakse vajaliku parandused
             if (veelJaotada == 0 && valdkonnaIndeks != 0 || veelJaotada < 0) {
                 if (veelJaotada == 0) {
                     if (kasÜlejäänudeelarvedNulliks()) break;
                     else valik2 = true;
                 }
-            }
 
-            if (valik2 || veelJaotada < 0) {
-                eelarveParandus(andmed, kulud);
-                if (veelJaotada == 0) {
-                    for (int i = 0; i < realoendur; i++)
-                        System.out.println(i + 1 + ". " + kulud.get(i).getNimetus());
-                    if (kasÜlejäänudeelarvedNulliks()) break;
-                    else eelarveParandus(andmed, kulud);
+                if (valik2 || veelJaotada < 0) {
+                    // kui eelarved on üle tulu või on kasutaja valinud valiku 2 kasÜlejäänudeelarvedNulliks() meetodis anname võimaluse teise abimeetodiga käesolevat eelarvet parandada
+                    eelarveParandus(andmed, kulud);
+                    // kui peale parandamist on kõik tulud jaotatud küsime uuesti kas soovitakse parandada
+                    if (veelJaotada == 0) {
+                        if (kasÜlejäänudeelarvedNulliks()) break;
+                        else eelarveParandus(andmed, kulud);
+
+                    }
+                    System.out.println("Jaotada on veel: " + veelJaotada + " eurot, valdkondi jäänud: " + (valdkonnaIndeks));
                 }
-                System.out.println("Jaotada on veel: " + veelJaotada + " eurot, valdkondi jäänud: " + (valdkonnaIndeks));
-
             } else if (valdkonnaIndeks == 0 && veelJaotada > 0) {
                 andmed[10][2] = säästud.lisaKulu(veelJaotada);
                 andmed[10][3] = säästud.protsent();
@@ -100,6 +108,7 @@ public class Eelarve {
                 System.out.println("Jaotada on veel: " + veelJaotada + " eurot, valdkondi jäänud: " + (valdkonnaIndeks));
         }
 
+        // siin on võimalus korduvalt lisada tehtud kulutusi ja vaadata ülevaadet oma eelarvetest ja kulutustest
         while (true) {
             System.out.println();
             System.out.println("Vali tegevus\n 1 - Lisa kulutus\n 2 - Vaata ülevaadet\n 3 - Lõpeta");
@@ -117,6 +126,8 @@ public class Eelarve {
                     andmed[valdkond - 1][3] = "Eelarve puudub!";
                 else
                     andmed[valdkond - 1][3] = kategooria.protsent();
+
+                //kui kulutused on alates meelelahutuse valdkonnast üle 75%, siis saab kasutaja hoiatuse
                 if (valdkond > 4) {
                     System.out.println();
                     kategooria.ülePiiri();
@@ -166,6 +177,8 @@ public class Eelarve {
         valdkonnaEelarve = scan.nextDouble();
         andmed[valdkond - 1][1] = kategooria.lisaEelarve(valdkonnaEelarve);
 
+
+        //lisame tagasi valesti seatud eelarve ja lahutame maha uue
         veelJaotada += eelmineEelarve;
         veelJaotada -= valdkonnaEelarve;
         eelarvedKokku -= eelmineEelarve;
@@ -177,6 +190,7 @@ public class Eelarve {
 
     public static boolean kasÜlejäänudeelarvedNulliks() {
         Scanner scan = new Scanner(System.in);
+        System.out.println();
         System.out.println("Oled ära jaotanud kogu oma tulu, valdkondi jäänud: " + (valdkonnaIndeks));
         System.out.println("Vajuta 1, kui sa ei soovi järgnevaid eelarveid sisestada");
         System.out.println("Vajuta 2, kui soovid mõnda eelnevat eelarvet uuesti sisestada");
