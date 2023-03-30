@@ -153,10 +153,10 @@ public class Eelarve {
             } else {
                 System.out.println("Jaotada on veel: " + veelJaotada + " eurot, valdkondi jäänud: " + (valdkonnaIndeks));
             }
-            System.out.println();
         }
 
         while (true) {
+            System.out.println();
             System.out.println("Vali tegevus\n 1 - Lisa kulutus\n 2 - Vaata ülevaadet\n 3 - Lõpeta");
             String valik = scan.next();
             System.out.println();
@@ -190,15 +190,15 @@ public class Eelarve {
                 else
                     System.out.println("Sinu kulud on ületanud eelarvetele planeeritud summa " + (eelarvedKokku + /*((double) andmed[8][2])*/ -kuludKokku) * -1 + " euro võrra");
             } else if (valik.equals("3")) {
-                System.out.println("Sinu kulutused kokku: " + kuludKokku);
-                if (eelarvedKokku - kuludKokku > 0) {
-                    System.out.println("Kuna sinu kulud jäid alla planeeritud eelarvete summa, siis säästsid sel kuul kokku " + ((double) andmed[10][2] + (eelarvedKokku - kuludKokku)) + " eurot");
-                } else {
-
-                }
+                System.out.println("Sinu kulutused kokku: " + kuludKokku + " eurot");
+                if (eelarvedKokku - kuludKokku > 0)
+                    System.out.println("Kuna sinu kulud jäid alla planeeritud eelarvete summa, siis säästsid sel kuul kokku " + ((double) andmed[10][2] + (eelarvedKokku - kuludKokku)) + " eurot. Tubli!");
+                else if (eelarvedKokku - kuludKokku < 0)
+                    System.out.println("Sinu kulud ületasid planeeritud eelarvete summa " + (kuludKokku - eelarvedKokku) + " euro võrra. Proovi uuel kuul paremini");
+                else
+                    System.out.println("Jäid oma kulutustega täpselt planeeritud eelarvete summa piiridesse. Hea töö!");
                 break;
             }
-            System.out.println();
         }
     }
 
@@ -236,7 +236,7 @@ public class Eelarve {
         Scanner scan = new Scanner(System.in);
         System.out.println("Oled ära jaotanud kogu oma tulu, valdkondi jäänud: " + (valdkonnaIndeks));
         System.out.println("Vajuta 1, kui sa ei soovi järgnevaid eelarveid sisestada");
-        System.out.println("Vajuta 2, kui soovid eelmist eelarvet uuesti sisestada");
+        System.out.println("Vajuta 2, kui soovid mõnda eelnevat eelarvet uuesti sisestada");
         String valik = scan.next();
         boolean otsus = true;
         if (valik.equals("2"))
